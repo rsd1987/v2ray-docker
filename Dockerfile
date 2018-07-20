@@ -36,15 +36,17 @@ RUN chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& rm -rf /var/cache/apt/*
 
-RUN mkdir -p /var/log/supervisor
-ADD conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 RUN rm -rf /etc/localtime
 ADD conf/localtime /etc/
 ADD conf/config.json /etc/v2ray/
 RUN rm -rf /usr/share/nginx/html/index.html
 ADD src/index.html /usr/share/nginx/html/
 ADD src/404.html /usr/share/nginx/html/
+
+ADD conf/supervisord.conf /etc/supervisor/supervisord.conf
+VOLUME ["/etc/supervisor/conf.d"]
+WORKDIR /etc/supervisor/conf.d
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
 EXPOSE 8080
 ENTRYPOINT ["/etc/entrypoint.sh"]
