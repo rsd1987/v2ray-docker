@@ -10,7 +10,9 @@ ADD conf/default.conf /etc/nginx/conf.d/
 ADD entrypoint.sh /etc/
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends wget unzip php-fpm php-curl php-cli php-mcrypt php-mysql php-readline
+	&& apt-get install -y --no-install-recommends wget unzip supervisor
+
+
 
 RUN wget --no-check-certificate -O v2ray.zip https://github.com/v2ray/v2ray-core/releases/download/v$VER/v2ray-linux-64.zip \
 	&& unzip v2ray.zip \
@@ -34,10 +36,12 @@ RUN chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& rm -rf /var/cache/apt/*
 
+RUN mkdir -p /var/log/supervisor
+ADD conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 RUN rm -rf /etc/localtime
 ADD conf/localtime /etc/
 ADD conf/config.json /etc/v2ray/
-ADD conf/www.conf /etc/php/7.0/fpm/pool.d/
 RUN rm -rf /usr/share/nginx/html/index.html
 ADD src/index.html /usr/share/nginx/html/
 ADD src/404.html /usr/share/nginx/html/
