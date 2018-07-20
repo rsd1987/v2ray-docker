@@ -44,9 +44,7 @@ ADD src/index.html /usr/share/nginx/html/
 ADD src/404.html /usr/share/nginx/html/
 
 ADD conf/supervisord.conf /etc/supervisor/supervisord.conf
-VOLUME ["/etc/supervisor/conf.d"]
-WORKDIR /etc/supervisor/conf.d
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
 
 EXPOSE 8080
 ENTRYPOINT ["/etc/entrypoint.sh"]
