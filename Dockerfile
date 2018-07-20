@@ -10,7 +10,7 @@ ADD conf/default.conf /etc/nginx/conf.d/
 ADD entrypoint.sh /etc/
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends wget unzip supervisor
+	&& apt-get install -y --no-install-recommends wget unzip
 
 
 
@@ -42,9 +42,6 @@ ADD conf/config.json /etc/v2ray/
 RUN rm -rf /usr/share/nginx/html/index.html
 ADD src/index.html /usr/share/nginx/html/
 ADD src/404.html /usr/share/nginx/html/
-
-ADD conf/supervisord.conf /etc/supervisor/supervisord.conf
-
 
 EXPOSE 8080
 ENTRYPOINT ["/etc/entrypoint.sh"]
